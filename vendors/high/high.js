@@ -119,7 +119,7 @@ function shake() {
     var o = "im_first";
     var u = ["im_drunk", "im_baked", "im_trippin", "im_blown"];
     var a = "mw-strobe_light";
-    var f = "http://o9w8f1xrl.bkt.clouddn.com/highqilai/harlem-shake-style.css";//可下载下来放到七牛，加快国内访问速度
+    var f = "/vendors/high/high.css";//可下载下来放到七牛，加快国内访问速度
     var l = "mw_added_css";
     var b = g();
     var w = y();
