@@ -1,0 +1,1577 @@
+<!DOCTYPE html>
+
+
+
+
+<html class="theme-next pisces" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+  <link href="//cdn.jsdelivr.net/fancybox/2.1.5/jquery.fancybox.min.css" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+  
+
+<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="分布式," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="wenshuai" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="一、基本概念 异常 超时 衡量指标   二、数据分布 哈希分布 顺序分布   三、负载均衡 四、复制 强同步复制协议 异步复制协议   五、CAP 六、BASE 基本可用 软状态 最终一致性   七、容错 故障检测 故障恢复   八、CDN 架构 参考资料   一、基本概念异常1. 服务器宕机内存错误、服务器停电等都会导致服务器宕机，此时节点无法正常工作，称为不可用。 服务器宕机会导致节点失去">
+<meta name="keywords" content="分布式">
+<meta property="og:type" content="article">
+<meta property="og:title" content="分布式基础">
+<meta property="og:url" content="http://chenwenshuai.top/2018/05/28/分布式基础/index.html">
+<meta property="og:site_name" content="wenshuai">
+<meta property="og:description" content="一、基本概念 异常 超时 衡量指标   二、数据分布 哈希分布 顺序分布   三、负载均衡 四、复制 强同步复制协议 异步复制协议   五、CAP 六、BASE 基本可用 软状态 最终一致性   七、容错 故障检测 故障恢复   八、CDN 架构 参考资料   一、基本概念异常1. 服务器宕机内存错误、服务器停电等都会导致服务器宕机，此时节点无法正常工作，称为不可用。 服务器宕机会导致节点失去">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://chenwenshuai.top/2018/05/28/pics//b0e8ef47-2f23-4379-8c64-10d5cb44d438.jpg">
+<meta property="og:image" content="http://chenwenshuai.top/2018/05/28/pics//d2d34239-e7c1-482b-b33e-3170c5943556.jpg">
+<meta property="og:image" content="http://chenwenshuai.top/2018/05/28/pics//91ef04e4-923a-4277-99c0-6be4ce81e5ac.jpg">
+<meta property="og:image" content="http://chenwenshuai.top/2018/05/28/pics//8f64e9c5-7682-4feb-9312-dea09514e160.jpg">
+<meta property="og:image" content="http://chenwenshuai.top/2018/05/28/pics//44e4a7ab-215c-41a1-8e34-f55f6c09e517.jpg">
+<meta property="og:image" content="http://chenwenshuai.top/2018/05/28/pics//992faced-afcf-414d-b801-9c16d6570fec.jpg">
+<meta property="og:image" content="http://chenwenshuai.top/2018/05/28/pics//5930aeb8-847d-4e9f-a168-9334d7dec744.png">
+<meta property="og:image" content="http://chenwenshuai.top/2018/05/28/pics//dbd60b1f-b700-4da6-a993-62578e892333.jpg">
+<meta property="og:updated_time" content="2018-05-30T11:31:21.577Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="分布式基础">
+<meta name="twitter:description" content="一、基本概念 异常 超时 衡量指标   二、数据分布 哈希分布 顺序分布   三、负载均衡 四、复制 强同步复制协议 异步复制协议   五、CAP 六、BASE 基本可用 软状态 最终一致性   七、容错 故障检测 故障恢复   八、CDN 架构 参考资料   一、基本概念异常1. 服务器宕机内存错误、服务器停电等都会导致服务器宕机，此时节点无法正常工作，称为不可用。 服务器宕机会导致节点失去">
+<meta name="twitter:image" content="http://chenwenshuai.top/2018/05/28/pics//b0e8ef47-2f23-4379-8c64-10d5cb44d438.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+
+
+
+  <link rel="canonical" href="http://chenwenshuai.top/2018/05/28/分布式基础/"/>
+
+
+
+
+
+  <title>分布式基础 | wenshuai</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?fae24cef81629cf551fb3c5455b1040c";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+</head>
+
+
+
+
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <a href="https://github.com/hellowenshuai" class="github-corner" aria-label="View source on Github"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#151513; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">wenshuai</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://chenwenshuai.top/2018/05/28/分布式基础/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="chenwenshuai">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="wenshuai">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">分布式基础</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-05-28T10:20:16+08:00">
+                2018-05-28
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/java面试/" itemprop="url" rel="index">
+                    <span itemprop="name">java面试</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/05/28/分布式基础/" class="leancloud_visitors" data-flag-title="分布式基础">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  3,103
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  11
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <!-- GFM-TOC -->
+<ul>
+<li><a href="#一基本概念">一、基本概念</a><ul>
+<li><a href="#异常">异常</a></li>
+<li><a href="#超时">超时</a></li>
+<li><a href="#衡量指标">衡量指标</a></li>
+</ul>
+</li>
+<li><a href="#二数据分布">二、数据分布</a><ul>
+<li><a href="#哈希分布">哈希分布</a></li>
+<li><a href="#顺序分布">顺序分布</a></li>
+</ul>
+</li>
+<li><a href="#三负载均衡">三、负载均衡</a></li>
+<li><a href="#四复制">四、复制</a><ul>
+<li><a href="#强同步复制协议">强同步复制协议</a></li>
+<li><a href="#异步复制协议">异步复制协议</a></li>
+</ul>
+</li>
+<li><a href="#五cap">五、CAP</a></li>
+<li><a href="#六base">六、BASE</a><ul>
+<li><a href="#基本可用">基本可用</a></li>
+<li><a href="#软状态">软状态</a></li>
+<li><a href="#最终一致性">最终一致性</a></li>
+</ul>
+</li>
+<li><a href="#七容错">七、容错</a><ul>
+<li><a href="#故障检测">故障检测</a></li>
+<li><a href="#故障恢复">故障恢复</a></li>
+</ul>
+</li>
+<li><a href="#八cdn-架构">八、CDN 架构</a></li>
+<li><a href="#参考资料">参考资料</a><!-- GFM-TOC -->
+</li>
+</ul>
+<h1 id="一、基本概念"><a href="#一、基本概念" class="headerlink" title="一、基本概念"></a>一、基本概念</h1><h2 id="异常"><a href="#异常" class="headerlink" title="异常"></a>异常</h2><h3 id="1-服务器宕机"><a href="#1-服务器宕机" class="headerlink" title="1. 服务器宕机"></a>1. 服务器宕机</h3><p>内存错误、服务器停电等都会导致服务器宕机，此时节点无法正常工作，称为不可用。</p>
+<p>服务器宕机会导致节点失去所有内存信息，因此需要将内存信息保存到持久化介质上。</p>
+<h3 id="2-网络异常"><a href="#2-网络异常" class="headerlink" title="2. 网络异常"></a>2. 网络异常</h3><p>有一种特殊的网络异常称为  <strong>网络分区</strong> ，即集群的所有节点被划分为多个区域，每个区域内部可以通信，但是区域之间无法通信。</p>
+<h3 id="3-磁盘故障"><a href="#3-磁盘故障" class="headerlink" title="3. 磁盘故障"></a>3. 磁盘故障</h3><p>磁盘故障是一种发生概率很高的异常。</p>
+<p>使用冗余机制，将数据存储到多台服务器。</p>
+<h2 id="超时"><a href="#超时" class="headerlink" title="超时"></a>超时</h2><p>在分布式系统中，一个请求除了成功和失败两种状态，还存在着超时状态。</p>
+<p><div align="center"> <img src="../pics//b0e8ef47-2f23-4379-8c64-10d5cb44d438.jpg"> </div><br></p>
+<p>可以将服务器的操作设计为具有  <strong>幂等性</strong> ，即执行多次的结果与执行一次的结果相同。如果使用这种方式，当出现超时的时候，可以不断地重新请求直到成功。</p>
+<h2 id="衡量指标"><a href="#衡量指标" class="headerlink" title="衡量指标"></a>衡量指标</h2><h3 id="1-性能"><a href="#1-性能" class="headerlink" title="1. 性能"></a>1. 性能</h3><p>常见的性能指标有：吞吐量、响应时间。</p>
+<p>其中，吞吐量指系统在某一段时间可以处理的请求总数，通常为每秒的读操作数或者写操作数；响应时间指从某个请求发出到接收到返回结果消耗的时间。</p>
+<p>这两个指标往往是矛盾的，追求高吞吐的系统，往往很难做到低响应时间，解释如下：</p>
+<ul>
+<li><p>在无并发的系统中，吞吐量为响应时间的倒数，例如响应时间为 10 ms，那么吞吐量为 100 req/s，因此高吞吐也就意味着低响应时间。</p>
+</li>
+<li><p>但是在并发的系统中，由于一个请求在调用 I/O 资源的时候，需要进行等待。服务器端一般使用的是异步等待方式，即等待的请求被阻塞之后不需要一直占用 CPU 资源。这种方式能大大提高 CPU 资源的利用率，例如上面的例子中，单个请求在无并发的系统中响应时间为 10 ms，如果在并发的系统中，那么吞吐量将大于 100 req/s。因此为了追求高吞吐量，通常会提高并发程度。但是并发程度的增加，会导致请求的平均响应时间也增加，因为请求不能马上被处理，需要和其它请求一起进行并发处理，响应时间自然就会增高。</p>
+</li>
+</ul>
+<h3 id="2-可用性"><a href="#2-可用性" class="headerlink" title="2. 可用性"></a>2. 可用性</h3><p>可用性指系统在面对各种异常时可以提供正常服务的能力。可以用系统可用时间占总时间的比值来衡量，4 个 9 的可用性表示系统 99.99% 的时间是可用的。</p>
+<h3 id="3-一致性"><a href="#3-一致性" class="headerlink" title="3. 一致性"></a>3. 一致性</h3><p>可以从两个角度理解一致性：从客户端的角度，读写操作是否满足某种特性；从服务器的角度，多个数据副本之间是否一致。</p>
+<p>有以下三种一致性模型：</p>
+<ol>
+<li>强一致性：新数据写入之后，在任何数据副本上都能读取到最新值；</li>
+<li>弱一致性：新数据写入之后，不能保证在数据副本上能读取到最新值；</li>
+<li>最终一致性：新数据写入之后，只能保证过了一个时间窗口后才能在数据副本上读取到最新值；</li>
+</ol>
+<h3 id="4-可扩展性"><a href="#4-可扩展性" class="headerlink" title="4. 可扩展性"></a>4. 可扩展性</h3><p>指系统通过扩展集群服务器规模来提高性能的能力。理想的分布式系统需要实现“线性可扩展”，即随着集群规模的增加，系统的整体性能也会线性增加。</p>
+<h1 id="二、数据分布"><a href="#二、数据分布" class="headerlink" title="二、数据分布"></a>二、数据分布</h1><p>分布式系统的数据分布在多个节点中，常用的数据分布方式有哈希分布和顺序分布。</p>
+<h2 id="哈希分布"><a href="#哈希分布" class="headerlink" title="哈希分布"></a>哈希分布</h2><p>哈希分布就是将数据计算哈希值之后，按照哈希值分配到不同的节点上。例如有 N 个节点，数据的主键为 key，则将该数据分配的节点序号为：hash(key)%N。</p>
+<p>传统的哈希分布算法存在一个问题：当节点数量变化时，也就是 N 值变化，那么几乎所有的数据都需要重新分布，将导致大量的数据迁移。</p>
+<p><strong>一致性哈希</strong> </p>
+<p>Distributed Hash Table（DHT）：对于哈希空间 0~2<sup>n</sup>，将该哈希空间看成一个哈希环，将每个节点都配置到哈希环上。每个数据对象通过哈希取模得到哈希值之后，存放到哈希环中顺时针方向第一个大于等于该哈希值的节点上。</p>
+<p><div align="center"> <img src="../pics//d2d34239-e7c1-482b-b33e-3170c5943556.jpg"> </div><br></p>
+<p>一致性哈希的优点是在加入或者删除节点时只会影响到哈希环中相邻的节点，例如下图中新增节点 X，只需要将数据对象 C 重新存放到节点 X 上即可，对于节点 A、B、D 都没有影响。</p>
+<p><div align="center"> <img src="../pics//91ef04e4-923a-4277-99c0-6be4ce81e5ac.jpg"> </div><br></p>
+<h2 id="顺序分布"><a href="#顺序分布" class="headerlink" title="顺序分布"></a>顺序分布</h2><p>哈希分布式破坏了数据的有序性，顺序分布则不会。</p>
+<p>顺序分布的数据划分为多个连续的部分，按一定策略分布到不同节点上。例如下图中，User 表的主键范围为 1 ~ 7000，使用顺序分布可以将其划分成多个子表，对应的主键范围为 1 ~ 1000，1001 ~ 2000，…，6001 ~ 7000。</p>
+<p>引入 Meta 表是为了支持更大的集群规模，它将原来的一层索引结分成两层，Meta 维护着 User 子表所在的节点，从而减轻 Root 节点的负担。</p>
+<p><div align="center"> <img src="../pics//8f64e9c5-7682-4feb-9312-dea09514e160.jpg"> </div><br></p>
+<h1 id="三、负载均衡"><a href="#三、负载均衡" class="headerlink" title="三、负载均衡"></a>三、负载均衡</h1><p>衡量负载的因素很多，如 CPU、内存、磁盘等资源使用情况、读写请求数等。分布式系统应当能够自动负载均衡，当某个节点的负载较高，将它的部分数据迁移到其它节点。</p>
+<p>每个集群都有一个总控节点，其它节点为工作节点，由总控节点根据全局负载信息进行整体调度，工作节点定时发送心跳包（Heartbeat）将节点负载相关的信息发送给总控节点。</p>
+<p>一个新上线的工作节点，由于其负载较低，如果不加控制，总控节点会将大量数据同时迁移到该节点上，造成该节点一段时间内无法工作。因此负载均衡操作需要平滑进行，新加入的节点需要较长的一段时间来达到比较均衡的状态。</p>
+<h1 id="四、复制"><a href="#四、复制" class="headerlink" title="四、复制"></a>四、复制</h1><p>复制是保证分布式系统高可用的基础，让一个数据存储多个副本，当某个副本所在的节点出现故障时，能够自动切换到其它副本上，从而实现故障恢复。</p>
+<p>多个副本通常有一个为主副本，其它为备副本。主副本用来处理写请求，备副本主要用来处理读请求，实现读写分离。主副本将同步操作日志发送给备副本，备副本通过回放操作日志获取最新修改。</p>
+<p><div align="center"> <img src="../pics//44e4a7ab-215c-41a1-8e34-f55f6c09e517.jpg"> </div><br></p>
+<p>主备副本之间有两种复制协议，一种是强同步复制协议，一种是异步复制协议。</p>
+<h2 id="强同步复制协议"><a href="#强同步复制协议" class="headerlink" title="强同步复制协议"></a>强同步复制协议</h2><p>要求主副本将同步操作日志发给备副本之后进行等待，要求至少一个备副本返回成功后，才开始修改主副本，修改完成之后通知客户端操作成功。</p>
+<p>优点：至少有一个备副本拥有完整的数据，出现故障时可以安全地切换到该备副本，因此一致性好。</p>
+<p>缺点：可用性差，因为主副本需要等待，那么整个分布式系统的可用时间就会降低。</p>
+<h2 id="异步复制协议"><a href="#异步复制协议" class="headerlink" title="异步复制协议"></a>异步复制协议</h2><p>主副本将同步操作日志发给备副本之后不需要进行等待，直接修改主副本并通知客户端操作成功。</p>
+<p>优点：可用性好。</p>
+<p>缺点：一致性差。</p>
+<h1 id="五、CAP"><a href="#五、CAP" class="headerlink" title="五、CAP"></a>五、CAP</h1><p>分布式系统不可能同时满足一致性（C：Consistency）、可用性（A：Availability）和分区容忍性（P：Partition tolerance），最多只能同时满足其中两项。这三个概念上文中已经提到。</p>
+<p>在设计分布式系统时，需要根据实际需求弱化某一要求。因此就有了下图中的三种设计：CA、CP 和 AP。</p>
+<p><div align="center"> <img src="../pics//992faced-afcf-414d-b801-9c16d6570fec.jpg" width="500"> </div><br></p>
+<p>需要注意的是，分区容忍性必不可少，因为需要总是假设网络是不可靠的。因此实际上设计分布式系统需要在一致性和可用性之间做权衡。</p>
+<h1 id="六、BASE"><a href="#六、BASE" class="headerlink" title="六、BASE"></a>六、BASE</h1><p>BASE 是 Basically Available（基本可用）、Soft State（软状态）和 Eventually Consistent（最终一致性）三个短语的缩写。BASE 理论是对 CAP 中一致性和可用性权衡的结果，是基于 CAP 定理逐步演化而来的。BASE 理论的核心思想是：即使无法做到强一致性，但每个应用都可以根据自身业务特点，采用适当的方式来使系统达到最终一致性。</p>
+<p><div align="center"> <img src="../pics//5930aeb8-847d-4e9f-a168-9334d7dec744.png" width="250"> </div><br></p>
+<h2 id="基本可用"><a href="#基本可用" class="headerlink" title="基本可用"></a>基本可用</h2><p>指分布式系统在出现故障的时候，保证核心可用，允许损失部分可用性。</p>
+<p>例如，电商在做促销时，服务层可能只提供降级服务，部分用户可能会被引导到降级页面上。</p>
+<h2 id="软状态"><a href="#软状态" class="headerlink" title="软状态"></a>软状态</h2><p>指允许系统存在中间状态，而该中间状态不会影响系统整体可用性，即不同节点的数据副本之间进行同步的过程允许存在延时。</p>
+<h2 id="最终一致性"><a href="#最终一致性" class="headerlink" title="最终一致性"></a>最终一致性</h2><p>指所有的数据副本，在经过一段时间的同步之后，最终都能够达到一致的状态。</p>
+<p>强一致性需要保证数据副本实时一致，而最终一致性只需要保证过一段时间是一致的。</p>
+<p>ACID 是传统数据库系统常用的设计理论，追求强一致性模型。BASE 常用于大型分布式系统，只需要保证最终一致性。在实际的分布式场景中，不同业务单元和组件对一致性的要求是不同的，因此 ACID 和 BASE 往往会结合在一起使用。</p>
+<h1 id="七、容错"><a href="#七、容错" class="headerlink" title="七、容错"></a>七、容错</h1><p>分布式系统故障发生的概率很大，为了实现高可用以及减少人工运维成本，需要实现自动化容错。</p>
+<h2 id="故障检测"><a href="#故障检测" class="headerlink" title="故障检测"></a>故障检测</h2><p>通过  <strong>租约机制</strong>  来对故障进行检测。假设节点 A 为主控节点，节点 A 向节点 B 发送租约，节点 B 在租约规定的期限内才能提供服务。期限快到达时，节点 B 需要向 A 重新申请租约。</p>
+<p>如果过期，那么 B 不再提供服务，并且 A 也能知道 B 此时可能发生故障并已经停止服务。可以看到，通过这种机制，A 和 B 都能对 B 发生故障这一事实达成一致。</p>
+<h2 id="故障恢复"><a href="#故障恢复" class="headerlink" title="故障恢复"></a>故障恢复</h2><p>当某个节点故障时，就将它上面的服务迁移到其它节点。</p>
+<h1 id="八、CDN-架构"><a href="#八、CDN-架构" class="headerlink" title="八、CDN 架构"></a>八、CDN 架构</h1><p>CND 通过将内容发布到靠近用户的边缘节点，使不同地域的用户在访问相同网页时可以就近获取。不仅可以减轻服务器的负担，也可以提高用户的访问速度。</p>
+<p>从下图可以看出，DNS 在对域名解析时不再向用户返回源服务器的 IP 地址，而是返回边缘节点的 IP 地址，所以用户最终访问的是边缘节点。边缘节点会先从源服务器中获取用户所需的数据，如果请求成功，边缘节点会将页面缓存下来，下次用户访问时可以直接读取。</p>
+<p><div align="center"> <img src="../pics//dbd60b1f-b700-4da6-a993-62578e892333.jpg"> </div><br></p>
+<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><ul>
+<li>杨传辉. 大规模分布式存储系统: 原理解析与架构实战[M]. 机械工业出版社, 2013.</li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    <div>
+      
+        <div>
+    
+        <div style="text-align:center;color: #555;font-size:14px;">-------------The End-------------</div>
+    
+</div>
+
+      
+    </div>
+
+    <div>
+          
+            
+<div class="my_post_copyright">
+  <script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
+
+  <!-- JS库 sweetalert 可修改路径 -->
+  <script src="https://cdn.bootcss.com/jquery/2.0.0/jquery.min.js"></script>
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+  <p><span>本文标题:</span><a href="/2018/05/28/分布式基础/">分布式基础</a></p>
+  <p><span>文章作者:</span><a href="/" title="访问 chenwenshuai 的个人博客">chenwenshuai</a></p>
+  <p><span>发布时间:</span>2018年05月28日 - 10:05</p>
+  <p><span>最后更新:</span>2018年05月30日 - 19:05</p>
+  <p><span>原始链接:</span><a href="/2018/05/28/分布式基础/" title="分布式基础">http://chenwenshuai.top/2018/05/28/分布式基础/</a>
+    <span class="copy-path"  title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="http://chenwenshuai.top/2018/05/28/分布式基础/"  aria-label="复制成功！"></i></span>
+  </p>
+  <p><span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">署名-非商业性使用-禁止演绎 4.0 国际</a> 转载请保留原文链接及作者。</p>
+</div>
+<script>
+    var clipboard = new Clipboard('.fa-clipboard');
+    $(".fa-clipboard").click(function(){
+      clipboard.on('success', function(){
+        swal({
+          title: "",
+          text: '复制成功',
+          icon: "success",
+          showConfirmButton: true
+          });
+    });
+    });
+</script>
+
+
+          
+    </div>
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div></div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="chenwenshuai 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/分布式/" rel="tag"><i class="fa fa-tag"></i>分布式</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/05/24/Java 容器/" rel="next" title="java 容器">
+                <i class="fa fa-chevron-left"></i> java 容器
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/05/29/分布式问题分析/" rel="prev" title="分布式问题分析">
+                分布式问题分析 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <!-- Go to www.addthis.com/dashboard to customize your tools -->
+<div class="addthis_inline_share_toolbox">
+  <script type = "text/javascript" src = "//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5afd005f9437d071" async = "async" ></script>
+</div>
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8zNjUzMC8xMzA2NQ=="></div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpg"
+                alt="chenwenshuai" />
+            
+              <p class="site-author-name" itemprop="name">chenwenshuai</p>
+              <p class="site-description motion-element" itemprop="description">Write with your heart and feel safe</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">16</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">13</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/hellowenshuai" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://my.csdn.net" target="_blank" title="CSDN">
+                      
+                        <i class="fa fa-fw fa-crosshairs"></i>CSDN</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://segmentfault.com/" target="_blank" title="思否">
+                      
+                        <i class="fa fa-fw fa-meh-o"></i>思否</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.cnblogs.com/" target="_blank" title="博客园">
+                      
+                        <i class="fa fa-fw fa-stack-overflow"></i>博客园</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#一、基本概念"><span class="nav-number">1.</span> <span class="nav-text">一、基本概念</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#异常"><span class="nav-number">1.1.</span> <span class="nav-text">异常</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-服务器宕机"><span class="nav-number">1.1.1.</span> <span class="nav-text">1. 服务器宕机</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-网络异常"><span class="nav-number">1.1.2.</span> <span class="nav-text">2. 网络异常</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-磁盘故障"><span class="nav-number">1.1.3.</span> <span class="nav-text">3. 磁盘故障</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#超时"><span class="nav-number">1.2.</span> <span class="nav-text">超时</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#衡量指标"><span class="nav-number">1.3.</span> <span class="nav-text">衡量指标</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-性能"><span class="nav-number">1.3.1.</span> <span class="nav-text">1. 性能</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-可用性"><span class="nav-number">1.3.2.</span> <span class="nav-text">2. 可用性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-一致性"><span class="nav-number">1.3.3.</span> <span class="nav-text">3. 一致性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-可扩展性"><span class="nav-number">1.3.4.</span> <span class="nav-text">4. 可扩展性</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#二、数据分布"><span class="nav-number">2.</span> <span class="nav-text">二、数据分布</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#哈希分布"><span class="nav-number">2.1.</span> <span class="nav-text">哈希分布</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#顺序分布"><span class="nav-number">2.2.</span> <span class="nav-text">顺序分布</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#三、负载均衡"><span class="nav-number">3.</span> <span class="nav-text">三、负载均衡</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#四、复制"><span class="nav-number">4.</span> <span class="nav-text">四、复制</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#强同步复制协议"><span class="nav-number">4.1.</span> <span class="nav-text">强同步复制协议</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#异步复制协议"><span class="nav-number">4.2.</span> <span class="nav-text">异步复制协议</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#五、CAP"><span class="nav-number">5.</span> <span class="nav-text">五、CAP</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#六、BASE"><span class="nav-number">6.</span> <span class="nav-text">六、BASE</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#基本可用"><span class="nav-number">6.1.</span> <span class="nav-text">基本可用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#软状态"><span class="nav-number">6.2.</span> <span class="nav-text">软状态</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#最终一致性"><span class="nav-number">6.3.</span> <span class="nav-text">最终一致性</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#七、容错"><span class="nav-number">7.</span> <span class="nav-text">七、容错</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#故障检测"><span class="nav-number">7.1.</span> <span class="nav-text">故障检测</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#故障恢复"><span class="nav-number">7.2.</span> <span class="nav-text">故障恢复</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#八、CDN-架构"><span class="nav-number">8.</span> <span class="nav-text">八、CDN 架构</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考资料"><span class="nav-number">9.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+  <div class="links-of-author motion-element">
+        <!--      
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/hellowenshuai || github" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://my.csdn.net || crosshairs" target="_blank" title="CSDN">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  CSDN
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://segmentfault.com/ || meh-o" target="_blank" title="思否">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  思否
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.cnblogs.com/ || stack-overflow" target="_blank" title="博客园">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  博客园
+                </a>
+              </span>
+             -->
+  <!--以下是加入关于high一下的代码-->
+           <span class="links-of-author-item"><a title="小high一下~" style="underline: none;color:red" rel="alternate" class="mw-harlem_shake_slow wobble shake" href="javascript:shake()"><i class="fa fa-music"></i> &nbsp;&nbsp;High</a></span>
+  <!--以上是加入关于high一下的代码-->
+        <!--      -->
+        </div>
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">true</span>
+
+<!--  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">Site words total count&#58;</span>
+    
+    <span title="Site words total count">46.0k</span>
+   -->
+</div>
+
+<div class="powered-by">
+<i class="fa fa-user-md"></i><span id="busuanzi_container_site_uv">
+  本站访客数:<span id="busuanzi_value_site_uv"></span>
+</span>
+</div>
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+
+ <div class="theme-info">
+  <div class="powered-by"></div>
+  <span class="post-count">博客全站共46.0k字</span>
+</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="//cdn.jsdelivr.net/jquery/2.1.3/jquery.min.js"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="//cdn.jsdelivr.net/fastclick/1.0.6/fastclick.min.js"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="//cdn.jsdelivr.net/jquery.lazyload/1.9.3/jquery.lazyload.min.js"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="//cdn.jsdelivr.net/velocity/1.2.3/velocity.min.js"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="//cdn.jsdelivr.net/velocity/1.2.3/velocity.ui.min.js"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="//cdn.jsdelivr.net/fancybox/2.1.5/jquery.fancybox.pack.js"></script>
+  
+
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("xCjswr0HV7E4492qk9O3hleL-gzGzoHsz", "8HB3yDIQJKUQKoq44MuoVKzc");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+
+<script src="/live2dw/lib/L2Dwidget.min.js?0c58a1486de42ac6cc1c59c7d98ae887"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","model":null,"display":{"position":"right","width":150,"height":300},"mobile":{"show":false}});</script></body>
+</html>
