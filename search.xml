@@ -1,9 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title></title>
+    <title><![CDATA[代码风格规范]]></title>
     <url>%2F2018%2F05%2F30%2F%E4%BB%A3%E7%A0%81%E9%A3%8E%E6%A0%BC%E8%A7%84%E8%8C%83%2F</url>
     <content type="text"><![CDATA[Google Java Style Guide http://www.hawstein.com/posts/google-java-style.html http://google.github.io/styleguide/javaguide.html Google C++ Style Guide http://zh-google-styleguide.readthedocs.io/en/latest/google-cpp-styleguide/contents/ http://google.github.io/styleguide/cppguide.html Google Python Style Guide http://zh-google-styleguide.readthedocs.io/en/latest/google-python-styleguide/contents/ http://google.github.io/styleguide/pyguide.html]]></content>
+      <categories>
+        <category>代码规范</category>
+      </categories>
+      <tags>
+        <tag>代码规范</tag>
+      </tags>
   </entry>
   <entry>
     <title><![CDATA[java 虚拟机]]></title>
